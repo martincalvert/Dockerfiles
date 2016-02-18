@@ -7,8 +7,15 @@ RUN apk update && apk add curl zip \
     && unzip consul.zip \
     && mv consul bin/consul \
     && rm consul.zip \
+    && mkdir consul consul/data consul/ui \
+    && curl 'https://releases.hashicorp.com/consul/0.6.3/consul_0.6.3_web_ui.zip' > consul_ui.zip \
+    && unzip -d consul/ui consul_ui.zip \
+    && rm consul_ui.zip \
     && apk del curl zip
 
-EXPOSE 8500
+EXPOSE 8300 8301 8301/udp 8302 8302/udp 8400 8500 8600 8600/udp
+ENV DNS_RESOLVES consul
+ENV DNS_PORT 8600
 
-CMD consul agent -server -data-dir /tmp/consul
+ADD ./consul.json /config/
+ENTRYPOINT ["/bin/consul", "agent", "-server", "-config-dir=/config/"]
