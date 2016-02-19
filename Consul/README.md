@@ -1,3 +1,5 @@
-###Consul
+### Consul
 
 Dockerfile of HashiCorp's Consul
+
+You can start it with `docker run -d -p 8400:8400 -p 8600:53/udp -p 8500:8500 -h consul --name consul consul -bootstrap-expect 1`
