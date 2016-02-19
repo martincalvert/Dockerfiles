@@ -8,3 +8,8 @@ RUN apk update && apk add curl zip \
     && mv vault bin/vault \
     && rm vault.zip \
     && apk del curl zip
+
+EXPOSE 8200
+ADD ./vault.hcl /config/
+
+ENTRYPOINT ["/bin/vault", "server", "-config=/config/vault.hcl"]
